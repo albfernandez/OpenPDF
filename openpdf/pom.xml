@@ -13,12 +13,15 @@
 
     <properties>
         <bouncycastle.version>1.60</bouncycastle.version>
+<<<<<<< HEAD
         <commons-text.version>1.3</commons-text.version>
         <commons-compress.version>1.17</commons-compress.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-codec.version>1.11</commons-codec.version>
         <commons-imaging.version>1.0-SNAPSHOT</commons-imaging.version>
         <juniversalchardet.version>1.0.3</juniversalchardet.version>
+=======
+>>>>>>> origin/master
     </properties>
 
 
