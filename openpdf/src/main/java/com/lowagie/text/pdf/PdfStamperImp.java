@@ -49,6 +49,7 @@ package com.lowagie.text.pdf;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -94,6 +95,9 @@ class PdfStamperImp extends PdfWriter {
     protected IntHashtable marked;
     protected int initialXrefSize;
     protected PdfAction openAction;
+    private boolean includeFileID = true;
+    private PdfObject overrideFileId = null;
+    private Calendar modificationDate = null;
 
     /** Creates new PdfStamperImp.
      * @param reader the read PDF
@@ -239,7 +243,14 @@ class PdfStamperImp extends PdfWriter {
         	altMetadata = xmpMetadata;
         }
         // if there is XMP data to add: add it
-        PdfDate date = new PdfDate();
+
+        PdfDate date = null;
+        if (modificationDate == null) {
+            date = new PdfDate();
+        } else {
+            date = new PdfDate(modificationDate);
+        }
+        
         if (altMetadata != null) {
         	PdfStream xmp;
         	try {
@@ -319,10 +330,16 @@ class PdfStamperImp extends PdfWriter {
                 PdfIndirectObject encryptionObject = addToBody(crypto.getEncryptionDictionary(), false);
                 encryption = encryptionObject.getIndirectReference();
             }
-            fileID = crypto.getFileID();
+            if (includeFileID) fileID = crypto.getFileID();
         }
-        else
-            fileID = PdfEncryption.createInfoId(PdfEncryption.createDocumentId());
+        else if (includeFileID) {
+            if (overrideFileId != null) {
+                fileID = overrideFileId;
+            } else {
+                fileID = PdfEncryption.createInfoId(PdfEncryption.createDocumentId());
+            }
+
+        }
         PRIndirectReference iRoot = (PRIndirectReference)reader.trailer.get(PdfName.ROOT);
         PdfIndirectReference root = new PdfIndirectReference(0, getNewObjectNumber(reader, iRoot.getNumber(), 0));
         PdfIndirectReference info = null;
@@ -1690,4 +1707,33 @@ class PdfStamperImp extends PdfWriter {
             pageResources.setOriginalResources(resources, stamper.namePtr);
         }
     }
+
+    /** These methods are used by PdfStamper to override some PDF properties when signing PDF files. */
+
+    public boolean isIncludeFileID() {
+        return includeFileID;
+    }
+
+    public void setIncludeFileID(boolean includeFileID) {
+        this.includeFileID = includeFileID;
+    }
+
+    public PdfObject getOverrideFileId() {
+        return overrideFileId;
+    }
+
+    public void setOverrideFileId(PdfObject overrideFileId) {
+        this.overrideFileId = overrideFileId;
+    }
+    
+
+    public Calendar getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Calendar modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+
 }

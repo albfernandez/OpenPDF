@@ -6,7 +6,7 @@
     <groupId>com.github.librepdf</groupId>
     <artifactId>openpdf-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.3-SNAPSHOT</version>
 
     <licenses>
         <license>
@@ -186,7 +186,7 @@
             <plugin>
               <groupId>org.sonatype.plugins</groupId>
               <artifactId>nexus-staging-maven-plugin</artifactId>
-              <version>1.6.7</version>
+              <version>1.6.8</version>
               <extensions>true</extensions>
               <configuration>
                  <serverId>ossrh</serverId>
@@ -251,9 +251,8 @@
 
     <developers>
         <developer>
-            <name>Art Krahenbuhl</name>
-            <email>rtfarte@gmail.com</email>
-            <organizationUrl>https://github.com/rtfarte</organizationUrl>
+            <name>The OpenPDF Project</name>
+            <organizationUrl>https://github.com/librepdf</organizationUrl>
         </developer>
     </developers>
     <!-- Distribution config from http://central.sonatype.org/pages/apache-maven.html#distribution-management-and-authentication -->
@@ -263,19 +262,5 @@
        <url>https://oss.sonatype.org/content/repositories/snapshots</url>
       </snapshotRepository>
      </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>apache.snapshots</id>
-            <name>Apache Development Snapshot Repository</name>
-            <url>https://repository.apache.org/content/repositories/snapshots/</url>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
 </project>
