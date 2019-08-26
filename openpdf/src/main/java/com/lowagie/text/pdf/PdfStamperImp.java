@@ -235,6 +235,10 @@ class PdfStamperImp extends PdfWriter {
         else if (!producer.contains(Document.getProduct())) {
           producer += "; modified using " + Document.getVersion();
         }
+        // if we explicitly set Producer key
+        if (moreInfo != null && moreInfo.containsKey("Producer")) {
+          producer = moreInfo.get("Producer");
+        }
         
 
 
@@ -263,8 +267,10 @@ class PdfStamperImp extends PdfWriter {
           PdfStream xmp = null;
           try {
             XmpReader xmpr = new XmpReader(altMetadata);
-            if (!xmpr.replace("http://ns.adobe.com/pdf/1.3/", "Producer", producer)) {
-              xmpr.add("rdf:Description", "http://ns.adobe.com/pdf/1.3/", "pdf:Producer", producer);
+            if (producer != null) {
+              if (!xmpr.replace("http://ns.adobe.com/pdf/1.3/", "Producer", producer)) {
+                xmpr.add("rdf:Description", "http://ns.adobe.com/pdf/1.3/", "pdf:Producer", producer);
+              }
             }
             if (!xmpr.replace("http://ns.adobe.com/xap/1.0/", "ModifyDate", date.getW3CDate())) {
               xmpr.add("rdf:Description", "http://ns.adobe.com/xap/1.0/", "xmp:ModifyDate", date.getW3CDate());
@@ -359,7 +365,9 @@ class PdfStamperImp extends PdfWriter {
           }
         }
         newInfo.put(PdfName.MODDATE, date);
-        newInfo.put(PdfName.PRODUCER, new PdfString(producer));
+        if (producer != null) {
+          newInfo.put(PdfName.PRODUCER, new PdfString(producer));
+        }
         
         if (moreInfo != null) {
             for (Map.Entry<String, String> entry : moreInfo.entrySet()) {
