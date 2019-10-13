@@ -49,38 +49,6 @@
 
 package com.lowagie.text.pdf;
 
-import com.lowagie.text.Anchor;
-import com.lowagie.text.Annotation;
-import com.lowagie.text.BadElementException;
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.ExceptionConverter;
-import com.lowagie.text.Font;
-import com.lowagie.text.Font;
-import com.lowagie.text.HeaderFooter;
-import com.lowagie.text.Image;
-import com.lowagie.text.Image;
-import com.lowagie.text.List;
-import com.lowagie.text.List;
-import com.lowagie.text.ListItem;
-import com.lowagie.text.MarkedObject;
-import com.lowagie.text.MarkedSection;
-import com.lowagie.text.Meta;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.Section;
-import com.lowagie.text.SimpleTable;
-import com.lowagie.text.Table;
-import com.lowagie.text.error_messages.MessageLocalization;
-import com.lowagie.text.pdf.collection.PdfCollection;
-import com.lowagie.text.pdf.draw.DrawInterface;
-import com.lowagie.text.pdf.internal.PdfAnnotationsImp;
-import com.lowagie.text.pdf.internal.PdfViewerPreferencesImp;
-
 import java.awt.Color;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -91,6 +59,34 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import com.lowagie.text.Anchor;
+import com.lowagie.text.Annotation;
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Chunk;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.ExceptionConverter;
+import com.lowagie.text.Font;
+import com.lowagie.text.HeaderFooter;
+import com.lowagie.text.Image;
+import com.lowagie.text.List;
+import com.lowagie.text.ListItem;
+import com.lowagie.text.MarkedObject;
+import com.lowagie.text.MarkedSection;
+import com.lowagie.text.Meta;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.Section;
+import com.lowagie.text.SimpleTable;
+import com.lowagie.text.Table;
+import com.lowagie.text.error_messages.MessageLocalization;
+import com.lowagie.text.pdf.collection.PdfCollection;
+import com.lowagie.text.pdf.draw.DrawInterface;
+import com.lowagie.text.pdf.internal.PdfAnnotationsImp;
+import com.lowagie.text.pdf.internal.PdfViewerPreferencesImp;
 
 
 /**
@@ -531,14 +527,8 @@ public class PdfDocument extends Document {
 
                     // if a paragraph has to be kept together, we wrap it in a table object
                     if (paragraph.getKeepTogether()) {
-                        carriageReturn();
-                        PdfPTable table = new PdfPTable(1);
-                        table.setWidthPercentage(100f);
-                        PdfPCell cell = new PdfPCell();
-                        cell.addElement(paragraph);
-                        cell.setBorder(Table.NO_BORDER);
-                        cell.setPadding(0);
-                        table.addCell(cell);
+                        carriageReturn();                        
+                        PdfPTable table = createInOneCell(paragraph.iterator());
                         indentation.indentLeft -= paragraph.getIndentationLeft();
                         indentation.indentRight -= paragraph.getIndentationRight();
                         this.add(table);
@@ -778,6 +768,22 @@ public class PdfDocument extends Document {
         catch(Exception e) {
             throw new DocumentException(e);
         }
+    }
+
+    private PdfPTable createInOneCell(Iterator elements) {
+      PdfPTable table = new PdfPTable(1);
+      table.setWidthPercentage(100f);
+      PdfPCell cell = new PdfPCell();
+      cell.setBorder(Table.NO_BORDER);
+      cell.setPadding(0);
+      while (elements.hasNext()) {
+        Object o = elements.next();
+        if (o instanceof Element) {
+          cell.addElement((Element) elements.next());
+        }
+      }
+      table.addCell(cell);
+      return table;
     }
 
 //    [L1] DocListener interface
