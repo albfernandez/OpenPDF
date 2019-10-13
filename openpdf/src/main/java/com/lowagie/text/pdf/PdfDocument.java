@@ -779,7 +779,7 @@ public class PdfDocument extends Document {
       while (elements.hasNext()) {
         Object o = elements.next();
         if (o instanceof Element) {
-          cell.addElement((Element) elements.next());
+          cell.addElement((Element) o);
         }
       }
       table.addCell(cell);
