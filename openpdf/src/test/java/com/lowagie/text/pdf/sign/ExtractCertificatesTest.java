@@ -30,6 +30,19 @@ public class ExtractCertificatesTest {
 		extract("src/test/resources/sample_signed-sha512.pdf");
 	}
 
+  /**
+   * Extract certificates and validate timestamp
+   * Sample file taken from https://www.tecxoft.com/samples.php (it has signature with timestamp with SHA-256)
+   * NB: Signature will only be valid till 2022/01/02 (Hence only Sout is used not assert)
+   *
+   * @throws Exception
+   */
+  @Test
+  void testSha256TimeStamp() throws Exception {
+      extract("src/test/resources/pdf_digital_signature_timestamp.pdf");
+  }
+  
+  
 	private void extract(String pdf) throws Exception {
 		
 		// Based in : https://github.com/iromu/pdf-signature-itext/blob/master/src/main/java/crypto/PDFSignature.java
@@ -60,6 +73,7 @@ public class ExtractCertificatesTest {
 				System.out.println("sign date:" + cal.getTime());
 				System.out.println("Subject: " + PdfPKCS7.getSubjectFields(certificate));
 				System.out.println("Document modified: " + !pk.verify());
+				System.out.println("Timestamp valid: " + pk.verifyTimestampImprint());
 	
 				Object fails[] = PdfPKCS7.verifyCertificates(pkc, kall, null, cal);
 				if (fails == null) {

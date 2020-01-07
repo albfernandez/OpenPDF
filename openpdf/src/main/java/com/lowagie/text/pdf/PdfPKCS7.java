@@ -85,6 +85,7 @@ import org.bouncycastle.jce.provider.X509CRLParser;
 import org.bouncycastle.operator.DigestCalculatorProvider;
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.bouncycastle.tsp.TimeStampToken;
+import org.bouncycastle.tsp.TimeStampTokenInfo;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -682,7 +683,9 @@ public class PdfPKCS7 {
             return false;
         MessageImprint imprint = timeStampToken.getTimeStampInfo().toASN1Structure()
                 .getMessageImprint();
-        byte[] md = MessageDigest.getInstance("SHA-1").digest(digest);
+        TimeStampTokenInfo info = timeStampToken.getTimeStampInfo();
+        String algOID = info.getMessageImprintAlgOID().getId();        
+        byte[] md =  MessageDigest.getInstance(getStandardJavaName(getDigest(algOID))).digest(digest);
         byte[] imphashed = imprint.getHashedMessage();
         return Arrays.equals(md, imphashed);
     }
