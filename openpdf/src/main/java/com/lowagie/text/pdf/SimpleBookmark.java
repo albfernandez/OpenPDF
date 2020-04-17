@@ -240,6 +240,9 @@ public final class SimpleBookmark implements SimpleXMLDocHandler {
 
     private static String makeBookmarkParam(PdfArray dest, IntHashtable pages)
     {
+      if (dest.size() == 0) {
+        throw new IllegalArgumentException("Illegal bookmark destination");
+      }
         StringBuilder s = new StringBuilder();
         PdfObject obj = dest.getPdfObject(0);
         if (obj.isNumber())
