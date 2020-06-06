@@ -2930,6 +2930,9 @@ public class PdfContentByte {
      * @param gstate the graphic state
      */
     public void setGState(PdfGState gstate) {
+        if (writer == null) {
+          return;
+        }
         PdfObject[] obj = writer.addSimpleExtGState(gstate);
         PageResources prs = getPageResources();
         PdfName name = prs.addExtGState((PdfName)obj[0], (PdfIndirectReference)obj[1]);
