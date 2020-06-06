@@ -49,6 +49,19 @@
 
 package com.lowagie.text.xml;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EmptyStackException;
+import java.util.HashMap;
+import java.util.Properties;
+import java.util.Stack;
+
+import javax.annotation.Nullable;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.helpers.DefaultHandler;
+
 import com.lowagie.text.Anchor;
 import com.lowagie.text.Annotation;
 import com.lowagie.text.BadElementException;
@@ -66,6 +79,7 @@ import com.lowagie.text.ListItem;
 import com.lowagie.text.Meta;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.Section;
 import com.lowagie.text.Table;
@@ -74,17 +88,6 @@ import com.lowagie.text.factories.ElementFactory;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.draw.LineSeparator;
 import com.lowagie.text.xml.simpleparser.EntitiesToSymbol;
-import org.xml.sax.Attributes;
-import org.xml.sax.helpers.DefaultHandler;
-
-import javax.annotation.Nullable;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EmptyStackException;
-import java.util.HashMap;
-import java.util.Properties;
-import java.util.Stack;
 
 /**
  * This class is a Handler that controls the iText XML to PDF conversion.
@@ -808,6 +811,11 @@ public class SAXiTextHandler extends DefaultHandler {
         // added directly
         if (current instanceof Section || current instanceof Cell) {
             ((TextElementArray) current).add(img);
+            stack.push(current);
+        }
+        // ... if it is a Phrase, we have to wrap the Image in a new Chunk
+        else if (current instanceof Phrase){
+            ((TextElementArray)current).add(new Chunk(img,0,0));
             stack.push(current);
         }
         // ...if not, we need to to a lot of stuff
