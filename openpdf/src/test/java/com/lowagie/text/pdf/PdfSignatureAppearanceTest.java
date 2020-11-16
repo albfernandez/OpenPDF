@@ -48,7 +48,7 @@ public class PdfSignatureAppearanceTest {
 
                 HashMap exc = new HashMap();
                 exc.put(PdfName.CONTENTS, 10);
-                sap.preClose(exc);
+                sap.preClose((java.util.Map)exc);
 
                 byte[] result = Utilities.toByteArray(sap.getRangeStream());
                 byte[] sha256 = getSHA256(result);
@@ -101,7 +101,7 @@ public class PdfSignatureAppearanceTest {
 
                 HashMap exc = new HashMap();
                 exc.put(PdfName.CONTENTS, 10);
-                sap.preClose(exc);
+                sap.preClose((java.util.Map)exc);
 
                 byte[] result = Utilities.toByteArray(sap.getRangeStream());
                 byte[] sha256 = getSHA256(result);

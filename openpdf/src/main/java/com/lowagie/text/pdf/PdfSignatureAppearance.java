@@ -960,7 +960,7 @@ public class PdfSignatureAppearance {
    *           on error
    */
   public void preClose() throws IOException, DocumentException {
-    preClose(null);
+    preClose((Map)null);
   }
 
   /**
@@ -985,6 +985,11 @@ public class PdfSignatureAppearance {
    *           on error
    */
   public void preClose(HashMap exclusionSizes) throws IOException,
+      DocumentException {
+      preClose((Map) exclusionSizes);
+  }
+      
+  public void preClose(Map<PdfName, Integer> exclusionSizes) throws IOException,
       DocumentException {
     if (preClosed)
       throw new DocumentException(
