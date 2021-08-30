@@ -44,7 +44,6 @@
 package com.lowagie.text.xml.simpleparser;
 
 import com.lowagie.text.error_messages.MessageLocalization;
-import org.mozilla.universalchardet.UniversalDetector;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -72,7 +71,7 @@ import java.util.Stack;
  * </ul>
  * <p>
  */
-@Deprecated
+
 public final class SimpleXMLParser {
     /** possible states */
     private final static int UNKNOWN = 0;
@@ -562,7 +561,7 @@ public final class SimpleXMLParser {
         int count = in.read(b4);
         if (count != 4)
             throw new IOException(MessageLocalization.getComposedMessage("insufficient.length"));
-        String encoding = UniversalDetector.detectCharsetFromBOM(b4);
+        String encoding = detectCharsetFromBOM(b4);
         if (encoding == null) encoding = "UTF-8"; //UTF-8 is default.
 
         String decl = null;
@@ -621,6 +620,38 @@ public final class SimpleXMLParser {
     
     public static void parse(SimpleXMLDocHandler doc,Reader r) throws IOException {
         parse(doc, null, r, false);
+    }
+    
+    /** Detect charset from BOM, as per <a href="https://unicode.org/faq/utf_bom.html#bom4">Unicode FAQ</a>. */
+    private static String detectCharsetFromBOM(byte[] bom) {
+        // 00 00 FE FF  UTF-32BE
+        // EF BB BF ..  UTF-8
+        // FE FF .. ..  UTF-16BE
+        // FF FE 00 00  UTF-32LE
+        // FF FE .. ..  UTF-16LE
+        switch (bom[0]) {
+            case (byte) 0x00:
+                if (bom[1] == (byte) 0x00 && bom[2] == (byte) 0xFE && bom[3] == (byte) 0xFF)
+                    return "UTF-32BE";
+                break;
+            case (byte) 0xEF:
+                if (bom[1] == (byte) 0xBB && bom[2] == (byte) 0xBF)
+                    return "UTF-8";
+                break;
+            case (byte) 0xFE:
+                if (bom[1] == (byte) 0xFF)
+                    return "UTF-16BE";
+                break;
+            case (byte) 0xFF:
+                if (bom[1] == (byte) 0xFE) {
+                    if (bom[2] == (byte) 0x00 && bom[3] == (byte) 0x00)
+                        return "UTF-32LE";
+                    else
+                        return "UTF-16LE";
+                }
+                break;
+        }
+        return null;
     }
 
 }
