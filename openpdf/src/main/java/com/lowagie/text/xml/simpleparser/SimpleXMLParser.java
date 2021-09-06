@@ -43,10 +43,7 @@
  */
 package com.lowagie.text.xml.simpleparser;
 
-import com.lowagie.text.error_messages.MessageLocalization;
-
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -54,6 +51,8 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
+
+import com.lowagie.text.error_messages.MessageLocalization;
 
 /**
  * A simple XML and HTML parser.  This parser is, like the SAX parser,
@@ -574,16 +573,6 @@ public final class SimpleXMLParser {
                 sb.append((char)c);
             }
             decl = sb.toString();
-        }
-        else if (encoding.equals("CP037")) {
-            ByteArrayOutputStream bi = new ByteArrayOutputStream();
-            int c;
-            while ((c = in.read()) != -1) {
-                if (c == 0x6e) // that's '>' in ebcdic
-                    break;
-                bi.write(c);
-            }
-            decl = new String(bi.toByteArray(), "CP037");
         }
         if (decl != null) {
             decl = getDeclaredEncoding(decl);
