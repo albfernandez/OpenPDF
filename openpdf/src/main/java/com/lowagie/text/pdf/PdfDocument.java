@@ -1646,6 +1646,9 @@ public class PdfDocument extends Document {
             if (chunk.isImage()) {
                 adjustMatrix = true;
             }
+            else if (chunk.isVerticalSeparator()) {
+                // Do nothing here to avoid printing out OBJECT_REPLACEMENT_CHARACTER
+            }
             else if (chunk.isHorizontalSeparator()) {
                 PdfTextArray array = new PdfTextArray();
                 array.add(-glueWidth * 1000f / chunk.font.size() / hScale);
