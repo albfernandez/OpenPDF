@@ -188,10 +188,13 @@ public class Word extends ParsedTextImpl {
     @Override
     public FinalText getFinalText(PdfReader reader, int page,
             TextAssembler assembler, boolean useMarkup) {
+        final String text = getText() == null ? "" : getText();
         if (useMarkup) {
-            return new FinalText(wordMarkup(getText(), reader, page, assembler));
+            return new FinalText(wordMarkup(text, reader, page, assembler));
         } else { 
-            return new FinalText(getText() + " ");
+            final boolean hasSpaceAlready = text.startsWith(" ") || text.endsWith(" ");
+            String prefixSpace = hasSpaceAlready ? "" : " ";
+            return new FinalText(prefixSpace + text);
         }
     }
 

@@ -318,7 +318,7 @@ public class PdfContentStreamHandler {
         for (TextAssemblyBuffer fragment : textFragments) {
             res.append(fragment.getText());
         }
-        return res.toString();
+        return res.toString().trim();
     }
 
     /**
