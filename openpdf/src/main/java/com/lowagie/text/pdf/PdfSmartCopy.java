@@ -94,6 +94,9 @@ public class PdfSmartCopy extends PdfCopy {
      */
     protected PdfIndirectReference copyIndirect(PRIndirectReference in) throws IOException, BadPdfFormatException {
         PdfObject srcObj = PdfReader.getPdfObjectRelease(in);
+        if (srcObj == null) {
+            return null;
+        }
         ByteStore streamKey = null;
         boolean validStream = false;
         if (srcObj.isStream()) {
