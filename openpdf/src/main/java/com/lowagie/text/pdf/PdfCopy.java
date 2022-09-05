@@ -704,6 +704,7 @@ public class PdfCopy extends PdfWriter {
       cstp.fieldArray.add(ref);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private void expandFields(PdfFormField field, ArrayList allAnnots) {
       allAnnots.add(field);
       List<PdfFormField> kids = field.getKidFields();
