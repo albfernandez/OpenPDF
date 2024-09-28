@@ -13,19 +13,19 @@
 
     <properties>
         <java-module-name>com.github.librepdf.openpdf</java-module-name>
-        <bouncycastle.version>1.67</bouncycastle.version>
+        <bouncycastle.version>1.78.1</bouncycastle.version>
         <imageio-tiff.version>3.5</imageio-tiff.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
+            <artifactId>bcprov-jdk18on</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
-            <artifactId>bcpkix-jdk15on</artifactId>
+            <artifactId>bcpkix-jdk18on</artifactId>
             <optional>true</optional>
         </dependency>
         <dependency>

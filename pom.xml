@@ -41,7 +41,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <bouncycastle.version>1.65</bouncycastle.version>
+        <bouncycastle.version>1.78.1</bouncycastle.version>
         <spotbugs.version>4.0.2</spotbugs.version>
         <hamcrest.version>2.2</hamcrest.version>
         <java-module-name>com.github.librepdf.openpdf.parent</java-module-name>
@@ -258,7 +258,7 @@
                     <!--Need this because dep is optional and pitest can't find classes-->
                     <dependency>
                         <groupId>org.bouncycastle</groupId>
-                        <artifactId>bcprov-jdk15on</artifactId>
+                        <artifactId>bcprov-jdk18on</artifactId>
                         <version>${bouncycastle.version}</version>
                     </dependency>
                 </dependencies>
@@ -280,12 +280,12 @@
         <dependencies>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15on</artifactId>
+                <artifactId>bcprov-jdk18on</artifactId>
                 <version>${bouncycastle.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>
-                <artifactId>bcpkix-jdk15on</artifactId>
+                <artifactId>bcpkix-jdk18on</artifactId>
                 <version>${bouncycastle.version}</version>
             </dependency>
             <dependency>
