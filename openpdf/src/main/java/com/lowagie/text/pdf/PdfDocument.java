@@ -124,6 +124,7 @@ public class PdfDocument extends Document {
 
         PdfInfo() {
             super();
+            addCreationDate();
         }
 
         /**
@@ -137,7 +138,6 @@ public class PdfDocument extends Document {
         PdfInfo(String author, String title, String subject) {
             this();
             addProducer();
-            addCreationDate();
             addTitle(title);
             addSubject(subject);
             addAuthor(author);
@@ -329,6 +329,7 @@ public class PdfDocument extends Document {
      */
     public PdfDocument() {
         super();
+        addCreationDate();
     }
 
     /** The <CODE>PdfWriter</CODE>. */
