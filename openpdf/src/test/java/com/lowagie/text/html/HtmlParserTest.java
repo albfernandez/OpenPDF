@@ -4,6 +4,8 @@ import java.io.StringReader;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.TextElementArray;
+
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -37,6 +39,7 @@ class HtmlParserTest {
      * Bug fix scenario (Issue 376): a img within two spans
      */
     @Test
+    @Disabled("why is it downloading from internet?")
     void testParse_imgInTwoSpans() throws Exception {
         Document doc1 = new Document();
         doc1.open();
